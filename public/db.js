@@ -1,3 +1,10 @@
+const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+
+switch (!window.indexedDB) {
+  default:
+    console.log("This browser doesn't support IndexedDB.")
+}
+
 let db;
 // create a new db request for a "budget" database.
 const request = indexedDB.open("budget", 1);
