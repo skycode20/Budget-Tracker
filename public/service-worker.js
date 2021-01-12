@@ -21,3 +21,21 @@ self.addEventListener('install', (event) => {
     );
 });
 
+//clean up old caches
+self.addEventListener(`activate`, event => {
+    const currentCaches = [CACHE_NAME, DATA_CACHE_NAME];
+    event.waitUntil(
+        caches
+            .keys()
+            .then(cacheNames =>
+                // return array of cache names that are old to delete
+                cacheNames.filter(cacheName => !currentCaches.includes(cacheName))
+            )
+            .then(cachesToDelete =>
+                Promise.all(
+                    cachesToDelete.map(cacheToDelete => caches.delete(cacheToDelete))
+                )
+            )
+            .then(() => self.clients.claim())
+    );
+});
